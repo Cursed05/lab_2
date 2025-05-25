@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Зберігання інформації про ОС і браузер у localStorage
+    // Ініціалізація AOS
+    AOS.init({
+        duration: 800, // тривалість анімації
+        once: true,    // анімація спрацьовує лише один раз
+        offset: 50     // відступ від краю екрану для спрацювання анімації
+    });
+
+    // ... (решта вашого JS коду залишається)
+
+    // 1. Зберігання інформації про ОС і браузер... (код без змін)
     const systemData = {
         platform: navigator.platform,
         userAgent: navigator.userAgent,
@@ -7,12 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
         cookiesEnabled: navigator.cookieEnabled,
         screenWidth: window.screen.width,
         screenHeight: window.screen.height,
-        deviceMemory: navigator.deviceMemory || 'N/A' // Доступно не у всіх браузерах
+        deviceMemory: navigator.deviceMemory || 'N/A'
     };
-
     localStorage.setItem('systemInfo', JSON.stringify(systemData));
-
-    // Відображення інформації у футері
     const infoDiv = document.getElementById('systemInfo');
     if (infoDiv) {
         infoDiv.textContent = JSON.stringify(systemData, null, 2);
@@ -20,7 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Отримання коментарів із JSONPlaceholder
     const commentsDiv = document.getElementById('comments');
-    if (commentsDiv) {
+    const loaderContainer = commentsDiv ? commentsDiv.querySelector('.loader-container') : null;
+
+    if (commentsDiv && loaderContainer) {
+        // Показати loader на старті (він вже видимий через HTML, але це для ясності)
+        loaderContainer.style.display = 'flex'; 
+
         fetch('https://jsonplaceholder.typicode.com/posts/13/comments')
             .then(response => {
                 if (!response.ok) {
@@ -29,42 +40,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(comments => {
-                commentsDiv.innerHTML = ''; // Очистити "Завантаження..."
+                loaderContainer.style.display = 'none'; // Приховати loader
+                commentsDiv.innerHTML = ''; // Очистити, щоб видалити loader контейнер
                 comments.forEach(comment => {
-                    const p = document.createElement('p');
-                    p.innerHTML = `<strong>${comment.name} (<em>${comment.email}</em>)</strong>: ${comment.body}`;
-                    commentsDiv.appendChild(p);
+                    const commentCard = document.createElement('div');
+                    commentCard.classList.add('comment-card');
+                    commentCard.setAttribute('data-aos', 'fade-left'); // Анімація для кожного коментаря
+                    commentCard.innerHTML = `
+                        <h4><i class="fa-solid fa-comment-dots"></i> ${comment.name}</h4>
+                        <p class="comment-email"><i class="fa-solid fa-envelope-open-text"></i> <em>${comment.email}</em></p>
+                        <p class="comment-body">${comment.body}</p>
+                    `;
+                    commentsDiv.appendChild(commentCard);
                 });
+                AOS.refresh(); // Оновити AOS для нових елементів (якщо вони додані після init)
             })
             .catch(error => {
                 console.error('Не вдалося завантажити коментарі:', error);
-                commentsDiv.innerHTML = '<p>Не вдалося завантажити коментарі. Будь ласка, спробуйте пізніше.</p>';
+                if (loaderContainer) loaderContainer.style.display = 'none'; // Приховати loader у випадку помилки
+                commentsDiv.innerHTML = '<p class="error-message"><i class="fa-solid fa-circle-exclamation"></i> Не вдалося завантажити коментарі. Будь ласка, спробуйте пізніше.</p>';
             });
     }
 
-    // 3. Модальне вікно
+    // 3. Модальне вікно (код без змін, окрім AOS атрибуту в HTML)
     const modal = document.getElementById('modal');
     const closeModalButton = document.getElementById('closeModal');
-
     if (modal && closeModalButton) {
-        // Показати модальне вікно через 60 секунд
         setTimeout(() => {
-            modal.classList.remove('hidden');
-        }, 60000); // 60000 мс = 60 секунд
-
-        // Закрити вікно по кнопці
-        closeModalButton.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-
-        // Закрити модальне вікно при кліку поза ним (на фон)
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.classList.add('hidden');
+            if(modal.classList.contains('hidden')) { // Перевіряємо чи модалка вже не видима
+                modal.classList.remove('hidden');
+                AOS.refreshHard(); // Перерахувати позиції для анімації модалки
             }
+        }, 60000);
+        closeModalButton.addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) modal.classList.add('hidden');
         });
-        
-        // Закрити модальне вікно при натисканні Escape
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
                 modal.classList.add('hidden');
@@ -74,30 +85,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Нічний/денний режим
     const themeToggleButton = document.getElementById('themeToggle');
+    const themeIcon = themeToggleButton ? themeToggleButton.querySelector('i') : null;
+    const themeText = themeToggleButton ? themeToggleButton.querySelector('.theme-text') : null;
     const body = document.body;
     
     function applyTheme(theme) {
         if (theme === 'night-mode') {
             body.classList.add('night-mode');
-            if (themeToggleButton) themeToggleButton.textContent = 'Денний режим';
+            if (themeIcon) themeIcon.className = 'fa-solid fa-sun'; // Змінити іконку
+            if (themeText) themeText.textContent = 'Денний режим';
         } else {
             body.classList.remove('night-mode');
-            if (themeToggleButton) themeToggleButton.textContent = 'Нічний режим';
+            if (themeIcon) themeIcon.className = 'fa-solid fa-moon'; // Змінити іконку
+            if (themeText) themeText.textContent = 'Нічний режим';
         }
     }
 
-    // Застосувати збережену тему або автоматичну
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         applyTheme(savedTheme);
     } else {
-        // Автоматичне переключення теми за часом
         const hour = new Date().getHours();
-        if (hour < 7 || hour >= 20) { // Нічний режим з 20:00 до 07:00
+        if (hour < 7 || hour >= 21) { // Умова для нічної теми: до 7 ранку або після 21 вечора
             applyTheme('night-mode');
             localStorage.setItem('theme', 'night-mode'); 
         } else {
-            applyTheme('day-mode');
+            applyTheme('day-mode'); // "day-mode" це просто відсутність "night-mode"
             localStorage.setItem('theme', 'day-mode');
         }
     }
@@ -107,10 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const isNightMode = body.classList.toggle('night-mode');
             if (isNightMode) {
                 localStorage.setItem('theme', 'night-mode');
-                themeToggleButton.textContent = 'Денний режим';
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
+                if (themeText) themeText.textContent = 'Денний режим';
             } else {
                 localStorage.setItem('theme', 'day-mode');
-                themeToggleButton.textContent = 'Нічний режим';
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
+                if (themeText) themeText.textContent = 'Нічний режим';
             }
         });
     }

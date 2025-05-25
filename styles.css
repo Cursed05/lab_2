@@ -1,280 +1,330 @@
-/* Загальні стилі */
+/* === Базові налаштування та Типографія === */
+:root {
+    --font-primary: 'Roboto', sans-serif;
+    --font-headings: 'Montserrat', sans-serif;
+
+    /* Денна тема */
+    --color-bg: #eef2f5; /* Світліший, м'якший фон */
+    --color-text: #333a45;
+    --color-container-bg: #ffffff;
+    --color-primary: #3498db; /* Зберіг основний синій, він хороший */
+    --color-primary-dark: #2980b9;
+    --color-secondary: #2ecc71;
+    --color-secondary-dark: #27ae60;
+    --color-accent: #e74c3c;
+    --color-accent-dark: #c0392b;
+    --color-border: #dfe4ea;
+    --color-muted-text: #57606f;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+    --loader-color: var(--color-primary);
+}
+
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    line-height: 1.6;
+    font-family: var(--font-primary);
+    line-height: 1.7;
     margin: 0;
-    padding-top: 70px; /* Щоб контент не ховався за фіксованою кнопкою теми */
-    background-color: #f4f7f6;
-    color: #333;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding-top: 80px; 
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 0.4s ease, color 0.4s ease;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto 20px auto;
-    padding: 25px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    flex-grow: 1;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+/* === Нічний режим === */
+body.night-mode {
+    --color-bg: #1d2125; /* Темніший фон */
+    --color-text: #c8d6e5;
+    --color-container-bg: #282c34; /* Колір контейнера */
+    --color-primary: #5dade2; /* Світліший синій для темної теми */
+    --color-primary-dark: #4a90e2;
+    --color-border: #3e444c;
+    --color-muted-text: #848d98;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.2);
+    --shadow-strong: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+    --loader-color: var(--color-primary);
+}
+body.night-mode .night-mode-icon-filter {
+    filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(86deg) brightness(105%) contrast(103%);
 }
 
-h1, h2, h3 {
-    color: #2c3e50;
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headings);
+    color: var(--color-text); /* Використовуємо змінну, бо в night-mode колір заголовків теж зміниться */
     margin-top: 0;
+    font-weight: 700;
+    transition: color 0.4s ease;
 }
-h1 { margin-bottom: 20px; }
-h2 { margin-bottom: 15px; border-bottom: 1px solid #ecf0f1; padding-bottom: 10px;}
-h3 { margin-bottom: 10px; }
+h1 { font-size: 2.8em; margin-bottom: 25px; letter-spacing: -1px;}
+h2 { font-size: 2em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--color-primary);}
+h3 { font-size: 1.6em; margin-bottom: 15px; }
+h4 { font-size: 1.2em; margin-bottom: 8px; }
 
-p {
-    margin-bottom: 10px;
+p { margin-bottom: 15px; }
+a { color: var(--color-primary); text-decoration: none; transition: color 0.3s ease;}
+a:hover { color: var(--color-primary-dark); text-decoration: underline; }
+
+i.fa-solid, i.fa-regular, i.fa-brands { /* Загальні стилі для іконок */
+    margin-right: 8px;
+    color: var(--color-primary); /* Іконки за замовчуванням теж мають основний колір */
+}
+h1 i.fa-solid, h2 i.fa-solid, h3 i.fa-solid { color: inherit; } /* Щоб іконки в заголовках мали колір тексту заголовка */
+
+/* === Основний контейнер === */
+.container {
+    max-width: 900px; /* Трохи ширший */
+    margin: 0 auto 30px auto;
+    padding: 30px 40px;
+    background-color: var(--color-container-bg);
+    border-radius: 12px; /* Більш округлі кути */
+    box-shadow: var(--shadow-strong);
+    flex-grow: 1;
+    transition: background-color 0.4s ease, box-shadow 0.3s ease;
+}
+.container header p i {
+    min-width: 20px; /* Для вирівнювання тексту, якщо іконки різні */
+    text-align: center;
 }
 
-a {
-    color: #3498db;
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-}
 
-/* Кнопка перемикання теми */
+/* === Кнопка теми === */
 #themeToggle {
     position: fixed;
     top: 20px;
     right: 20px;
-    padding: 10px 15px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    padding: 12px 18px;
+    background-color: var(--color-container-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 25px; /* Овальна кнопка */
     cursor: pointer;
     font-size: 14px;
+    font-weight: 500;
     z-index: 1000;
-    transition: background-color 0.3s ease;
+    box-shadow: var(--shadow-light);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
 }
 #themeToggle:hover {
-    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+}
+#themeToggle i {
+    color: var(--color-primary);
+    transition: color 0.3s ease;
+}
+#themeToggle .theme-text {
+    margin-left: 5px; /* Невеликий відступ для тексту від іконки */
 }
 
-/* Коментарі */
-#comments p {
-    background-color: #e9ecef;
-    padding: 12px 15px;
-    border-radius: 4px;
-    margin-bottom: 12px;
-    border-left: 4px solid #3498db;
-    transition: background-color 0.3s ease, border-left-color 0.3s ease;
+/* === Коментарі === */
+.comments-section { margin-top: 40px; }
+.comment-card {
+    background-color: var(--color-bg); /* Фон картки коментаря трохи відрізняється від фону контейнера */
+    padding: 20px 25px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 5px solid var(--color-secondary); /* Акцентний бордер */
+    box-shadow: var(--shadow-light);
+    transition: background-color 0.4s ease, border-left-color 0.3s ease, box-shadow 0.3s ease;
 }
-#comments p strong {
-    color: #2c3e50;
-    display: block;
-    margin-bottom: 5px;
+.comment-card h4 i { color: var(--color-secondary); }
+.comment-card p.comment-email {
+    font-style: italic;
+    font-size: 0.9em;
+    color: var(--color-muted-text);
+    margin-bottom: 10px;
+}
+.comment-card p.comment-email i { color: var(--color-muted-text); font-size: 0.9em;}
+.comment-card p.comment-body { font-size: 0.95em; line-height: 1.6; }
+
+/* Індикатор завантаження (Loader) */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    color: var(--color-muted-text);
+}
+.loader {
+    border: 6px solid var(--color-border); /* Світліший контур */
+    border-top: 6px solid var(--loader-color); /* Колір анімації */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.error-message {
+    text-align: center;
+    color: var(--color-accent);
+    font-size: 1.1em;
+    padding: 20px;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 6px;
+    border-left: 4px solid var(--color-accent);
 }
 
-/* Футер */
+/* === Футер === */
 footer {
     text-align: center;
-    padding: 25px;
-    background-color: #dde3e8;
-    border-top: 1px solid #cdd5db;
-    margin-top: auto;
-    transition: background-color 0.3s ease, border-top-color 0.3s ease;
+    padding: 30px 20px;
+    background-color: var(--color-container-bg); /* футер з тим же фоном, що й контейнер */
+    border-top: 1px solid var(--color-border);
+    margin-top: auto; /* Притискає футер донизу */
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    transition: background-color 0.4s ease, border-top-color 0.3s ease;
 }
 #systemInfo {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9em;
+    font-size: 0.85em;
     white-space: pre-wrap;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 4px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
+    word-break: break-all;
+    background-color: var(--color-bg); /* Знову фон трохи інший */
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border: 1px solid var(--color-border);
     max-width: 100%;
     overflow-x: auto;
     text-align: left;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    box-shadow: var(--shadow-light);
+    color: var(--color-muted-text);
+    transition: background-color 0.4s ease, border-color 0.3s ease, color 0.4s ease;
 }
 
-/* Модальне вікно */
-.hidden {
-  display: none !important; /* ВАЖЛИВО: для перекриття display:flex від #modal ID селектора */
-}
 
+/* === Модальне вікно === */
+.hidden { display: none !important; }
 #modal {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7); /* Більш темний фон */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
-  padding: 15px;
+  padding: 20px;
 }
-
 .modal-content {
-  background: white;
-  padding: 25px 30px;
-  border-radius: 8px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+  background: var(--color-container-bg);
+  padding: 30px 35px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-strong);
   width: 90%;
-  max-width: 500px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  max-width: 550px;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
-.modal-content h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-}
+.modal-content h2 i { color: var(--color-primary); }
 
 /* Форма в модальному вікні */
 .modal-content form label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #555;
+    font-size: 0.95em;
+    color: var(--color-muted-text); /* Колір лейблів */
 }
+.modal-content form label i { color: var(--color-muted-text); margin-right: 5px;}
+
 .modal-content form input[type="text"],
 .modal-content form input[type="email"],
 .modal-content form input[type="tel"],
 .modal-content form textarea {
-    width: calc(100% - 24px); /* padding 10px*2 + border 1px*2 */
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccd1d9;
-    border-radius: 4px;
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
     font-size: 1em;
-    font-family: inherit;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    font-family: var(--font-primary);
+    background-color: var(--color-bg); /* Фон полів */
+    color: var(--color-text);
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .modal-content form input[type="text"]:focus,
 .modal-content form input[type="email"]:focus,
 .modal-content form input[type="tel"]:focus,
 .modal-content form textarea:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 52, 152, 219), 0.25); /* Потрібно визначити --color-primary-rgb */
+    background-color: var(--color-container-bg);
 }
-.modal-content form textarea {
-    resize: vertical;
-    min-height: 80px;
+body.night-mode { /* Визначення --color-primary-rgb для темної теми */
+    --color-primary-rgb: 93, 173, 226;
+}
+body:not(.night-mode) { /* Визначення --color-primary-rgb для світлої теми */
+    --color-primary-rgb: 52, 152, 219;
 }
 
+.modal-content form textarea { resize: vertical; min-height: 100px; }
+.modal-content .form-buttons {
+    display: flex;
+    justify-content: flex-end; /* Кнопки праворуч */
+    gap: 10px; /* Відстань між кнопками */
+    margin-top: 10px;
+}
 .modal-content form button {
-    padding: 12px 20px;
+    padding: 12px 22px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 1em;
     font-weight: 500;
-    transition: background-color 0.2s ease, opacity 0.2s ease;
-    margin-top: 10px;
+    font-family: var(--font-headings); /* Заголовковий шрифт для кнопок */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.modal-content form button i { margin-right: 8px; }
 .modal-content form button[type="submit"] {
-    background-color: #2ecc71;
+    background-color: var(--color-secondary);
     color: white;
-    margin-right: 10px;
 }
 .modal-content form button[type="submit"]:hover {
-    background-color: #27ae60;
+    background-color: var(--color-secondary-dark);
+    transform: translateY(-1px);
 }
 .modal-content form button#closeModal {
-    background-color: #e74c3c;
+    background-color: var(--color-accent);
     color: white;
 }
 .modal-content form button#closeModal:hover {
-    background-color: #c0392b;
+    background-color: var(--color-accent-dark);
+    transform: translateY(-1px);
 }
 
-/* --- Нічний режим --- */
-.night-mode {
-    background-color: #1e272e;
-    color: #e0e0e0;
-}
-.night-mode .container {
-    background-color: #2c3a47;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-}
-.night-mode h1, .night-mode h2, .night-mode h3 {
-    color: #ecf0f1;
-}
-.night-mode h2 {
-    border-bottom-color: #3e4a56;
-}
-.night-mode a {
-    color: #5dade2;
-}
+/* Адаптивність */
+@media (max-width: 768px) {
+    body { padding-top: 70px; }
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.7em; }
+    .container { padding: 20px 25px; margin-bottom: 20px; }
+    #themeToggle { padding: 10px 15px; font-size: 13px; }
+    #themeToggle .theme-text { display: none; } /* Приховати текст на малих екранах, залишити іконку */
+    #themeToggle i { margin-right: 0; }
 
-.night-mode #themeToggle {
-    background-color: #52616b;
+    .modal-content { padding: 20px; }
+    .modal-content .form-buttons { flex-direction: column-reverse; } /* Кнопки одна під одною */
+    .modal-content .form-buttons button { width: 100%; margin-bottom: 10px;}
+    .modal-content .form-buttons button:last-child { margin-bottom: 0; }
 }
-.night-mode #themeToggle:hover {
-    background-color: #414f59;
-}
-
-.night-mode #comments p {
-    background-color: #3a4752;
-    border-left-color: #5dade2;
-    color: #c8d6e5;
-}
-.night-mode #comments p strong {
-    color: #ecf0f1;
-}
-
-.night-mode footer {
-    background-color: #161c20;
-    border-top-color: #2c3a47;
-}
-.night-mode #systemInfo {
-    background-color: #2c3a47;
-    border-color: #4a5b68;
-    color: #c8d6e5;
-}
-
-.night-mode .modal-content {
-    background: #2c3a47;
-    color: #e0e0e0;
-}
-.night-mode .modal-content form label {
-    color: #bdc3c7;
-}
-.night-mode .modal-content form input[type="text"],
-.night-mode .modal-content form input[type="email"],
-.night-mode .modal-content form input[type="tel"],
-.night-mode .modal-content form textarea {
-    background-color: #3e4a56;
-    border-color: #52616b;
-    color: #e0e0e0;
-}
-.night-mode .modal-content form input[type="text"]::placeholder,
-.night-mode .modal-content form input[type="email"]::placeholder,
-.night-mode .modal-content form input[type="tel"]::placeholder,
-.night-mode .modal-content form textarea::placeholder {
-    color: #95a5a6;
-}
-.night-mode .modal-content form input[type="text"]:focus,
-.night-mode .modal-content form input[type="email"]:focus,
-.night-mode .modal-content form input[type="tel"]:focus,
-.night-mode .modal-content form textarea:focus {
-    border-color: #5dade2;
-    box-shadow: 0 0 0 2px rgba(93, 173, 226, 0.25);
-}
-
-.night-mode .modal-content form button[type="submit"] {
-    background-color: #1abc9c;
-}
-.night-mode .modal-content form button[type="submit"]:hover {
-    background-color: #16a085;
-}
-.night-mode .modal-content form button#closeModal {
-    background-color: #d35400;
-}
-.night-mode .modal-content form button#closeModal:hover {
-    background-color: #e67e22;
+@media (max-width: 480px) {
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.5em; }
+    .container { padding: 15px; }
 }
