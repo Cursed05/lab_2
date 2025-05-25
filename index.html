@@ -2,51 +2,43 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резюме - Олександр Лис</title>
     <link rel="stylesheet" href="styles.css">
-    <title>Резюме</title>
-
 </head>
 <body>
-    <h1>Олександр Лис</h1>
-    <p><strong>Email:</strong> oleksandr.k@example.com</p>
-    <p><strong>Телефон:</strong> +380671234567</p>
-    <p><strong>Місто:</strong> Львів, Україна</p>
+    <button id="themeToggle">Нічний режим</button>
 
-    <h2>Про мене</h2>
-    <p>Я студент третього курсу Національного університету "Львівська політехніка", спеціальність "Кібербезпека". Цікавлюсь інформаційною безпекою, мережевими технологіями та веб-розробкою. Маю базові навички роботи з Git, Linux та HTML.</p>
+    <div class="container">
+        <h1>Олександр Лис</h1>
+        <p><strong>Email:</strong> oleksandr.lys.kb.2022@lpnu.ua</p>
+        <p><strong>Навчаюсь:</strong> Львівська політехніка, 3 курс, Кібербезпека</p>
 
-    <h2>Освіта</h2>
-    <ul>
-        <li><strong>Національний університет "Львівська політехніка"</strong>, бакалавр, Кібербезпека, 2021 – дотепер</li>
-        <li>ЗОШ №46, місто Львів, 2010 – 2021</li>
-    </ul>
+        <h2>Коментарі роботодавців</h2>
+        <div id="comments">
+            <p>Завантаження коментарів...</p>
+        </div>
+    </div>
 
-    <h2>Навички</h2>
-    <ul>
-        <li>HTML, робота з тегами та структурою документа</li>
-        <li>Git, базові команди для керування версіями</li>
-        <li>Linux (термінал, основні команди)</li>
-        <li>Знання основ мережевої безпеки та криптографії</li>
-    </ul>
+    <footer>
+        <h3>Інформація про систему:</h3>
+        <div id="systemInfo"><p>Завантаження інформації про систему...</p></div>
+    </footer>
 
-    <h2>Проєкти</h2>
-    <ul>
-        <li>Проста HTML-сторінка у форматі резюме</li>
-        <li>Лабораторні роботи з мережевої безпеки (робота з Wireshark, Kali Linux)</li>
-    </ul>
+    <div id="modal" class="hidden">
+        <div class="modal-content">
+            <h2>Зворотній зв'язок</h2>
+            <form action="https://formspree.io/f/xpwdgqpa" method="POST">
+                <label>Ім’я: <input type="text" name="name" required></label>
+                <label>Email: <input type="email" name="email" required></label>
+                <label>Телефон (необов'язково): <input type="tel" name="phone"></label>
+                <label>Повідомлення: <textarea name="message" rows="5" required></textarea></label>
+                <button type="submit">Відправити</button>
+                <button type="button" id="closeModal">Закрити</button>
+            </form>
+        </div>
+    </div>
 
-    <h2>Мови</h2>
-    <ul>
-        <li>Українська — рідна</li>
-        <li>Англійська — середній рівень (читання технічної документації)</li>
-    </ul>
-
-    <h2>Інтереси</h2>
-    <ul>
-        <li>Кібербезпека</li>
-        <li>Етичний хакінг</li>
-        <li>Технології з відкритим кодом</li>
-        <li>Ігри та геймінг-культура</li>
-    </ul>
+    <script src="script.js"></script>
 </body>
 </html>

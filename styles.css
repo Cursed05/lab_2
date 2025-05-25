@@ -1,29 +1,280 @@
+/* Загальні стилі */
 body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-h1 {
-    color: #2c3e50;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 10px;
-}
-
-h2 {
-    color: #34495e;
-    margin-top: 30px;
-}
-
-p, li {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     line-height: 1.6;
+    margin: 0;
+    padding-top: 70px; /* Щоб контент не ховався за фіксованою кнопкою теми */
+    background-color: #f4f7f6;
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-ul {
-    margin-left: 20px;
+.container {
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    padding: 25px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    flex-grow: 1;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-strong {
-    color: #000;
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+h1 { margin-bottom: 20px; }
+h2 { margin-bottom: 15px; border-bottom: 1px solid #ecf0f1; padding-bottom: 10px;}
+h3 { margin-bottom: 10px; }
+
+p {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Кнопка перемикання теми */
+#themeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+#themeToggle:hover {
+    background-color: #2980b9;
+}
+
+/* Коментарі */
+#comments p {
+    background-color: #e9ecef;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    border-left: 4px solid #3498db;
+    transition: background-color 0.3s ease, border-left-color 0.3s ease;
+}
+#comments p strong {
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Футер */
+footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #dde3e8;
+    border-top: 1px solid #cdd5db;
+    margin-top: auto;
+    transition: background-color 0.3s ease, border-top-color 0.3s ease;
+}
+#systemInfo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    white-space: pre-wrap;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    max-width: 100%;
+    overflow-x: auto;
+    text-align: left;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Модальне вікно */
+.hidden {
+  display: none !important; /* ВАЖЛИВО: для перекриття display:flex від #modal ID селектора */
+}
+
+#modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 15px;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+  width: 90%;
+  max-width: 500px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Форма в модальному вікні */
+.modal-content form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+.modal-content form input[type="text"],
+.modal-content form input[type="email"],
+.modal-content form input[type="tel"],
+.modal-content form textarea {
+    width: calc(100% - 24px); /* padding 10px*2 + border 1px*2 */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccd1d9;
+    border-radius: 4px;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.modal-content form input[type="text"]:focus,
+.modal-content form input[type="email"]:focus,
+.modal-content form input[type="tel"]:focus,
+.modal-content form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+.modal-content form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-content form button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    margin-top: 10px;
+}
+.modal-content form button[type="submit"] {
+    background-color: #2ecc71;
+    color: white;
+    margin-right: 10px;
+}
+.modal-content form button[type="submit"]:hover {
+    background-color: #27ae60;
+}
+.modal-content form button#closeModal {
+    background-color: #e74c3c;
+    color: white;
+}
+.modal-content form button#closeModal:hover {
+    background-color: #c0392b;
+}
+
+/* --- Нічний режим --- */
+.night-mode {
+    background-color: #1e272e;
+    color: #e0e0e0;
+}
+.night-mode .container {
+    background-color: #2c3a47;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+.night-mode h1, .night-mode h2, .night-mode h3 {
+    color: #ecf0f1;
+}
+.night-mode h2 {
+    border-bottom-color: #3e4a56;
+}
+.night-mode a {
+    color: #5dade2;
+}
+
+.night-mode #themeToggle {
+    background-color: #52616b;
+}
+.night-mode #themeToggle:hover {
+    background-color: #414f59;
+}
+
+.night-mode #comments p {
+    background-color: #3a4752;
+    border-left-color: #5dade2;
+    color: #c8d6e5;
+}
+.night-mode #comments p strong {
+    color: #ecf0f1;
+}
+
+.night-mode footer {
+    background-color: #161c20;
+    border-top-color: #2c3a47;
+}
+.night-mode #systemInfo {
+    background-color: #2c3a47;
+    border-color: #4a5b68;
+    color: #c8d6e5;
+}
+
+.night-mode .modal-content {
+    background: #2c3a47;
+    color: #e0e0e0;
+}
+.night-mode .modal-content form label {
+    color: #bdc3c7;
+}
+.night-mode .modal-content form input[type="text"],
+.night-mode .modal-content form input[type="email"],
+.night-mode .modal-content form input[type="tel"],
+.night-mode .modal-content form textarea {
+    background-color: #3e4a56;
+    border-color: #52616b;
+    color: #e0e0e0;
+}
+.night-mode .modal-content form input[type="text"]::placeholder,
+.night-mode .modal-content form input[type="email"]::placeholder,
+.night-mode .modal-content form input[type="tel"]::placeholder,
+.night-mode .modal-content form textarea::placeholder {
+    color: #95a5a6;
+}
+.night-mode .modal-content form input[type="text"]:focus,
+.night-mode .modal-content form input[type="email"]:focus,
+.night-mode .modal-content form input[type="tel"]:focus,
+.night-mode .modal-content form textarea:focus {
+    border-color: #5dade2;
+    box-shadow: 0 0 0 2px rgba(93, 173, 226, 0.25);
+}
+
+.night-mode .modal-content form button[type="submit"] {
+    background-color: #1abc9c;
+}
+.night-mode .modal-content form button[type="submit"]:hover {
+    background-color: #16a085;
+}
+.night-mode .modal-content form button#closeModal {
+    background-color: #d35400;
+}
+.night-mode .modal-content form button#closeModal:hover {
+    background-color: #e67e22;
 }
